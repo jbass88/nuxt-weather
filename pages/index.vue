@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { GeocodeApiResponse } from '~/types/weather'
 
 const city = ref('')
 const weather = ref(null)
@@ -12,20 +13,27 @@ async function getWeather() {
     }
 
     try {
-        const response = await $fetch('/api/weather', {
+        console.log("Client Request:")
+        console.log(city.value)
+        const response = await $fetch<GeocodeApiResponse>('/api/weather/geocode', {
         method: 'POST',
         body: {
-        city:   city.value,
+            city:   city.value,
         },})
 
         console.log("Client Response: ")
         console.log(response)
-        if (response && response.success) {
-            console.log("Success")
+
+        if (response) {
+            const success = response.success
+            if (success)
+                console.log("Success")
+            else               
+                console.log("Failed")
         }
         else {
             alert('Something went wrong. The response was blank.')
-            console.log("Failed")
+            console.log("Response failed")
         }
     } 
     catch (err) {
