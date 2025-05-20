@@ -17,6 +17,5 @@ export async function openWeatherFetch(path: string, params: Record<string, stri
     const res = await fetch(url);
     const json = await res.json();
 
-    // If you want to return both raw and parsed:
     return { ok: res.ok, status: res.status, json, url, statusText: res.statusText };
 }
