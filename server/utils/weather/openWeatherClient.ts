@@ -9,13 +9,10 @@ export async function openWeatherFetch(path: string, params: Record<string, stri
     const urlParams = new URLSearchParams({ ...params, appid: apiKey });
     const url = `${BASE_URL}${path}?${urlParams}`;
 
-    // const res = await fetch(url);
-    // if (!res.ok)
-    //     throw new Error('OpenWeatherMap error: ${res.status} ${res.statusText}');
-    // return res.json();
-
     const res = await fetch(url);
+    console.log(url)
     const json = await res.json();
+    console.log(json)
 
     return { ok: res.ok, status: res.status, json, url, statusText: res.statusText };
 }
