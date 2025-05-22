@@ -10,9 +10,7 @@ export async function openWeatherFetch(path: string, params: Record<string, stri
     const url = `${BASE_URL}${path}?${urlParams}`;
 
     const res = await fetch(url);
-    console.log(url)
     const json = await res.json();
-    console.log(json)
 
     return { ok: res.ok, status: res.status, json, url, statusText: res.statusText };
 }

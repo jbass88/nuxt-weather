@@ -27,23 +27,18 @@ async function getCurrent(lat: string, lon: string) {
 
     current.value = null
     try {
-        console.log("Client:")
-        console.log(lat, lon)
-
         const fetchRes = await $fetch<CurrentApiResponse>('/api/weather/current', {
         method: 'POST',
         body: {
             lat:    lat,
             lon:    lon
         },})
-        console.log(fetchRes)
         if (fetchRes && fetchRes.success) {
             current.value = fetchRes.response
             error.value = ''
         }
         else {
             error.value = "Current failed."
-            console.log("Current failed")
         }
     } 
     catch (err) {
@@ -70,7 +65,6 @@ async function getForecast(lat: string, lon: string) {
         }
         else {
             error.value = "Forecast failed."
-            console.log("Forecast failed")
         }
     } 
     catch (err) {
@@ -114,9 +108,6 @@ async function geocodeLocation(query : string) {
                     options.value.push({key: responseKey, city: responseCity, state: responseState, country: responseCountry, lat: responseLat, lon: responseLon})
                 }
             }
-        }
-        else {
-            console.log("Response failed")
         }
     } 
     catch (err) {
