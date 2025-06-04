@@ -1,24 +1,24 @@
 export interface GeocodeApiResponse {
-  success: boolean
-  response?: any
-  errorMessage?: string
-  error?: any
+  success: boolean;
+  response?: any;
+  errorMessage?: string;
+  error?: any;
 }
 
 export type GeocodeCityResponse = {
-  key: string
-  city: string
-  state: string
-  country: string
-  lat: number
-  lon: number
-}
+  key: string;
+  city: string;
+  state: string;
+  country: string;
+  lat: number;
+  lon: number;
+};
 
 export interface CurrentApiResponse {
-  success: boolean
-  response?: any
-  errorMessage?: string
-  error?: any
+  success: boolean;
+  response?: any;
+  errorMessage?: string;
+  error?: any;
 }
 
 export interface CurrentResponse {
@@ -46,7 +46,8 @@ export interface CurrentResponse {
     deg: number;
     gust?: number;
   };
-  rain?: { '1h'?: number };
+  rain?: { "1h"?: number };
+  snow?: { "1h"?: number };
   clouds: { all: number };
   dt: number;
   sys: {
@@ -61,10 +62,10 @@ export interface CurrentResponse {
 }
 
 export interface ForecastApiResponse {
-  success: boolean
-  response?: any
-  errorMessage?: string
-  error?: any
+  success: boolean;
+  response?: any;
+  errorMessage?: string;
+  error?: any;
 }
 
 export interface ForecastResponse {
@@ -119,15 +120,15 @@ export interface ForecastWind {
 }
 
 export interface ForecastRain {
-  ['3h']: number;
+  ["3h"]: number;
 }
 
 export interface ForecastSnow {
-  ['3h']: number;
+  ["3h"]: number;
 }
 
 export interface ForecastSys {
-  pod: 'd' | 'n';
+  pod: "d" | "n";
 }
 
 export interface ForecastCity {

@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* LIGHT (default) */
+:root {
+  --body: #fafafa; /* almost-black rails */
+  --surface: #ffffff; /* page background */
+  --card: #ffffff; /* nav pill */
+  --txt: #1f2937;
+  --border: rgba(0, 0, 0, 0.12);
+
+  --ui-primary: black; /* Nuxt UI override example */
+}
+
+/* DARK */
+.dark {
+  --body: #0c0c0f; /* rails */
+  --surface: #1b1b1f; /* page background */
+  --card: #26262c; /* nav pill */
+  --txt: #d1d5db;
+  --border: rgba(255, 255, 255, 0.14);
+
+  --ui-primary: white; /* Nuxt UI override example */
+}
