@@ -51,24 +51,24 @@ watch(selectedCity, (newValue, oldValue) => {
   }
 });
 
-function formatCityTime(dt: number, timezone: number) {
+function formatDateTime(dt: number, timezone: number) {
   const cityLocalTimestampMillis = (dt + timezone) * 1000;
   const cityDate = new Date(cityLocalTimestampMillis);
 
   const year = cityDate.getUTCFullYear();
-  const month = (cityDate.getUTCMonth() + 1).toString().padStart(2, "0"); 
+  const month = (cityDate.getUTCMonth() + 1).toString().padStart(2, "0");
   const day = cityDate.getUTCDate().toString().padStart(2, "0");
 
-  let hours24 = cityDate.getUTCHours(); 
+  let hours24 = cityDate.getUTCHours();
   const minutes = cityDate.getUTCMinutes().toString().padStart(2, "0");
   const seconds = cityDate.getUTCSeconds().toString().padStart(2, "0");
 
   const ampm = hours24 >= 12 ? "PM" : "AM";
-  let hours12 = hours24 % 12; 
+  let hours12 = hours24 % 12;
   if (hours12 === 0) {
-    hours12 = 12; 
+    hours12 = 12;
   }
-  const displayHours = hours12.toString().padStart(2, "0"); 
+  const displayHours = hours12.toString().padStart(2, "0");
 
   const timeStr = `${displayHours}:${minutes}:${seconds} ${ampm}`;
   const dateStr = `${year}-${month}-${day} ${timeStr}`;
@@ -115,10 +115,9 @@ function displayTemperature(kelvin: number): string {
 }
 
 function getWindDirection(deg: number): string {
-  const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
   return directions[Math.round(deg / 45) % 8];
 }
-
 </script>
 
 <template>
@@ -155,7 +154,7 @@ function getWindDirection(deg: number): string {
       <div class="mb-6 text-gray-400">
         <span class="font-bold">Last Updated:</span>
         <span class="font-semibold ml-2">{{
-          formatCityTime(current.dt, current.timezone)
+          formatDateTime(current.dt, current.timezone)
         }}</span>
       </div>
 
@@ -247,7 +246,11 @@ function getWindDirection(deg: number): string {
             <UIcon name="i-lucide-compass" class="text-xl" />
             <span class="font-bold">Wind Dir:</span>
           </div>
-          <span class="font-semibold">{{ current.wind.deg }}° ({{ getWindDirection(current.wind.deg) }})</span>
+          <span class="font-semibold"
+            >{{ current.wind.deg }}° ({{
+              getWindDirection(current.wind.deg)
+            }})</span
+          >
         </div>
         <div
           v-if="current.wind.gust !== undefined"

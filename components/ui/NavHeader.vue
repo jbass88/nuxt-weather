@@ -21,7 +21,7 @@ function toggleTemperatureUnit() {
     <UContainer class="flex items-center justify-between py-3">
       <NuxtLink  to="/" class="flex items-center gap-2 text-xl font-bold">
         Weather<span class="text-teal-400">UI</span>
-      </NuxtLink >
+      </NuxtLink>
 
       <nav class="hidden md:flex gap-6">
         <NuxtLink to="/" class="hover:text-teal-400">Home</NuxtLink>
