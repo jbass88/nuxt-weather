@@ -18,60 +18,6 @@ const error = ref("");
 
 const temperatureUnit = useState<"celsius" | "fahrenheit">("temperatureUnit");
 
-const testItems = ref<AccordionItem[]>([
-  {
-    label: "Icons",
-    icon: "i-lucide-smile",
-    content: "You have nothing to do, @nuxt/icon will handle it automatically.",
-  },
-  {
-    label: "Colors",
-    icon: "i-lucide-swatch-book",
-    content:
-      "Choose a primary and a neutral color from your Tailwind CSS theme.",
-  },
-  {
-    label: "Components",
-    icon: "i-lucide-box",
-    content:
-      "You can customize components by using the `class` / `ui` props or in your app.config.ts.",
-  },
-]);
-
-function formatDateTime(
-  unixTimestamp: number,
-  timezoneOffset: number,
-  includeDayOfWeek: boolean = true,
-  includeYear: boolean = false
-): string {
-  const cityLocalTimestampMillis = (unixTimestamp + timezoneOffset) * 1000;
-  const cityDate = new Date(cityLocalTimestampMillis);
-
-  const options: Intl.DateTimeFormatOptions = {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-    timeZone: "UTC", // Because we already adjusted the timestamp to be local UTC
-  };
-
-  if (includeDayOfWeek) {
-    options.weekday = "short";
-    options.month = "short";
-    options.day = "numeric";
-  } else {
-    options.month = "numeric";
-    options.day = "numeric";
-  }
-
-  if (includeYear) {
-    options.year = "numeric";
-  }
-
-  return new Intl.DateTimeFormat("en-US", options).format(cityDate);
-}
-
-// Helper function to format date and time for the accordion header's left side
-// e.g., "Thu, Jun 5, 4:00 PM"
 function formatDateTimeForHeaderLeft(
   unixTimestamp: number,
   timezoneOffset: number

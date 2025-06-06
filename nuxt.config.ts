@@ -25,6 +25,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     openWeatherApiKey: process.env.OPEN_WEATHER_API_KEY, // server‑only
+    public: {
+      openWeatherApiKey: process.env.OPEN_WEATHER_API_KEY, // client
+    }
   },
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',

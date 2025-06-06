@@ -222,8 +222,6 @@ function getWindDirection(deg: number): string {
           </div>
           <span class="font-semibold">{{ current.main.pressure }} hPa</span>
         </div>
-        <div></div>
-
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-cloudy" class="text-xl" />
@@ -261,8 +259,8 @@ function getWindDirection(deg: number): string {
             <span class="font-bold">Wind Gust:</span>
           </div>
           <span class="font-semibold ml-2">{{ current.wind.gust }} m/s</span>
-        </div>
-
+        </div>       
+        <div></div>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-sunrise" class="text-xl" />
