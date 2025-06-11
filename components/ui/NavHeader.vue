@@ -1,12 +1,51 @@
 <script setup lang="ts">
-import { useColorMode } from "@vueuse/core";
+import { useColorMode, useStorage } from "@vueuse/core";
+
 import type { GeocodeCityResponse } from "~/types/weather";
 const selectedCity = useState<GeocodeCityResponse>("selectedCity");
 const mode = useColorMode();
-const temperatureUnit = useState<"celsius" | "fahrenheit">(
+const temperatureUnit = useStorage<"celsius" | "fahrenheit">(
   "temperatureUnit",
-  () => "celsius"
+  () => "fahrenheit"
 );
+
+const userLocation = useState<{ lat: number; lon: number } | null>(
+  "userLocation",
+  () => null
+);
+const locationError = ref<string | null>(null);
+
+function requestLocation() {
+  if (!navigator.geolocation) {
+    locationError.value = "Geolocation is not supported by your browser.";
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      userLocation.value = {
+        lat: position.coords.latitude,
+        lon: position.coords.longitude,
+      };
+      locationError.value = null;
+    },
+    (error) => {
+      // Handle errors: error.PERMISSION_DENIED, etc.
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          locationError.value = "Permission denied.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          locationError.value = "Location unavailable.";
+          break;
+        case error.TIMEOUT:
+          locationError.value = "Location request timed out.";
+          break;
+        default:
+          locationError.value = "An unknown error occurred.";
+      }
+    }
+  );
+}
 
 function toggleTemperatureUnit() {
   temperatureUnit.value =
@@ -19,7 +58,10 @@ function toggleTemperatureUnit() {
     class="w-full border-b border-gray-300 dark:border-white/10 sticky top-0 z-50 backdrop-blur"
   >
     <UContainer class="flex items-center justify-between py-3">
-      <NuxtLink to="/" class="hidden md:flex items-center gap-2 text-xl font-bold">
+      <NuxtLink
+        to="/"
+        class="hidden md:flex items-center gap-2 text-xl font-bold"
+      >
         Weather<span class="text-teal-400">UI</span>
       </NuxtLink>
 
@@ -74,6 +116,13 @@ function toggleTemperatureUnit() {
             temperatureUnit === "celsius" ? "°C" : "°F"
           }}</span>
         </UButton>
+
+        <UButton
+          icon="i-lucide-locate-fixed"
+          variant="ghost"
+          size="sm"
+          @click="requestLocation"
+        />
 
         <ClientOnly>
           <UButton

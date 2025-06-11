@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
+import { useStorage } from "@vueuse/core";
 import HeaderSection from "~/components/sections/HeaderSection.vue";
 import countries from "i18n-iso-countries";
 
@@ -10,9 +11,19 @@ import type {
 } from "~/types/weather";
 const selectedCity = useState<GeocodeCityResponse>("selectedCity");
 const current = ref<CurrentResponse | null>(null);
+const isLoading = ref(false);
 const error = ref("");
 
-const temperatureUnit = useState<"celsius" | "fahrenheit">("temperatureUnit");
+const temperatureUnit = useStorage<"celsius" | "fahrenheit">(
+  "temperatureUnit",
+  "fahrenheit"
+);
+
+async function getLoadingCurrent(lat: number, lon: number) {
+  isLoading.value = true;
+  await getCurrent(lat, lon);
+  isLoading.value = false;
+}
 
 async function getCurrent(lat: number, lon: number) {
   if (!lat || !lon) return;
@@ -39,7 +50,7 @@ async function getCurrent(lat: number, lon: number) {
 
 onMounted(() => {
   if (selectedCity && selectedCity.value) {
-    getCurrent(selectedCity.value.lat, selectedCity.value.lon);
+    getLoadingCurrent(selectedCity.value.lat, selectedCity.value.lon);
   }
 });
 
@@ -47,7 +58,7 @@ watch(selectedCity, (newValue, oldValue) => {
   if (!newValue) {
     current.value = null;
   } else {
-    getCurrent(newValue.lat, newValue.lon);
+    getLoadingCurrent(newValue.lat, newValue.lon);
   }
 });
 
@@ -137,7 +148,14 @@ function getWindDirection(deg: number): string {
     />
 
     <div
-      v-if="current"
+      v-if="isLoading"
+      class="bg-[var(--surface)] border border-[var(--border)] shadow-lg rounded-xl text-[var(--txt)] p-6 mt-6 flex items-center justify-center"
+    >
+      <div class="loader"></div>
+    </div>
+
+    <div
+      v-if="current && !isLoading"
       class="bg-[var(--surface)] border border-[var(--border)] shadow-lg rounded-xl text-[var(--txt)] p-6 mt-6"
     >
       <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 flex-wrap">
@@ -259,8 +277,8 @@ function getWindDirection(deg: number): string {
             <span class="font-bold">Wind Gust:</span>
           </div>
           <span class="font-semibold ml-2">{{ current.wind.gust }} m/s</span>
-        </div>       
-        <div></div>
+        </div>
+        <div class="hidden md:flex"></div>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-sunrise" class="text-xl" />
@@ -306,4 +324,62 @@ function getWindDirection(deg: number): string {
   </div>
 </template>
 
-<style></style>
+<style>
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: fit-content;
+  font-size: 40px;
+  font-family: monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #0000;
+  -webkit-text-stroke: 1px var(--txt);
+  --g: conic-gradient(var(--txt) 0 0) no-repeat text;
+  background: var(--g) 0, var(--g) 1ch, var(--g) 2ch, var(--g) 3ch, var(--g) 4ch,
+    var(--g) 5ch, var(--g) 6ch;
+  animation: l18-0 2s linear infinite alternate, l18-1 4s linear infinite;
+}
+.loader:before {
+  content: "Loading";
+}
+@keyframes l18-0 {
+  0% {
+    background-size: 1ch 0, 1ch 0, 1ch 0, 1ch 0, 1ch 0, 1ch 0, 1ch 0;
+  }
+  14.28% {
+    background-size: 1ch 100%, 1ch 50%, 1ch 0, 1ch 0, 1ch 0, 1ch 0, 1ch 0;
+  }
+  28.57% {
+    background-size: 1ch 100%, 1ch 100%, 1ch 50%, 1ch 0, 1ch 0, 1ch 0, 1ch 0;
+  }
+  42.85% {
+    background-size: 1ch 100%, 1ch 100%, 1ch 100%, 1ch 50%, 1ch 0, 1ch 0, 1ch 0;
+  }
+  57.14% {
+    background-size: 1ch 100%, 1ch 100%, 1ch 100%, 1ch 100%, 1ch 50%, 1ch 0,
+      1ch 0;
+  }
+  71.43% {
+    background-size: 1ch 100%, 1ch 100%, 1ch 100%, 1ch 100%, 1ch 100%, 1ch 50%,
+      1ch 0;
+  }
+  85.71% {
+    background-size: 1ch 100%, 1ch 100%, 1ch 100%, 1ch 100%, 1ch 100%, 1ch 100%,
+      1ch 50%;
+  }
+  100% {
+    background-size: 1ch 100%, 1ch 100%, 1ch 100%, 1ch 100%, 1ch 100%, 1ch 100%,
+      1ch 100%;
+  }
+}
+@keyframes l18-1 {
+  0%,
+  50% {
+    background-position-y: 100%;
+  }
+  50.01%,
+  to {
+    background-position-y: 0;
+  }
+}
+</style>
