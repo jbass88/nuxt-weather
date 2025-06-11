@@ -19,7 +19,7 @@ function toggleTemperatureUnit() {
     class="w-full border-b border-gray-300 dark:border-white/10 sticky top-0 z-50 backdrop-blur"
   >
     <UContainer class="flex items-center justify-between py-3">
-      <NuxtLink to="/" class="flex items-center gap-2 text-xl font-bold">
+      <NuxtLink to="/" class="hidden md:flex items-center gap-2 text-xl font-bold">
         Weather<span class="text-teal-400">UI</span>
       </NuxtLink>
 
