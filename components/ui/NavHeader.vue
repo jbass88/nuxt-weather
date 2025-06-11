@@ -19,7 +19,7 @@ function toggleTemperatureUnit() {
     class="w-full border-b border-gray-300 dark:border-white/10 sticky top-0 z-50 backdrop-blur"
   >
     <UContainer class="flex items-center justify-between py-3">
-      <NuxtLink  to="/" class="flex items-center gap-2 text-xl font-bold">
+      <NuxtLink to="/" class="flex items-center gap-2 text-xl font-bold">
         Weather<span class="text-teal-400">UI</span>
       </NuxtLink>
 
@@ -32,6 +32,31 @@ function toggleTemperatureUnit() {
           >Forecast</NuxtLink
         >
         <NuxtLink v-if="selectedCity" to="/map" class="hover:text-teal-400"
+          >Map</NuxtLink
+        >
+      </nav>
+      <nav
+        class="flex md:hidden justify-center gap-6 px-2 py-3 border-b border-gray-300 dark:border-white/10 bg-background/90 sticky top-[60px] z-40"
+      >
+        <NuxtLink
+          v-if="selectedCity"
+          to="/current"
+          class="hover:text-teal-400 font-medium"
+          active-class="text-teal-400"
+          >Current</NuxtLink
+        >
+        <NuxtLink
+          v-if="selectedCity"
+          to="/forecast"
+          class="hover:text-teal-400 font-medium"
+          active-class="text-teal-400"
+          >Forecast</NuxtLink
+        >
+        <NuxtLink
+          v-if="selectedCity"
+          to="/map"
+          class="hover:text-teal-400 font-medium"
+          active-class="text-teal-400"
           >Map</NuxtLink
         >
       </nav>
